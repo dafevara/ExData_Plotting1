@@ -4,7 +4,7 @@
 # Email: dafevara at gmail dot com
 
 # Course Project 1
-# Plot 1
+# Plot 2
 
 
 # Dependencies
@@ -26,16 +26,21 @@ ReadData <- function(){
   #data <- data[data$Date > '2007-01-31' & data$Date < '2007-02-02',]
 
   data <- readRDS("preset_data.rds")
+  data$tadTemp <- paste(data$Date, data$Time)
+
+  data$Time <- strptime(data$tadTemp, format = "%Y-%m-%d %H:%M:%S")
+
   return(data)
 }
 
-Plot1.run <- function(){
+Plot2.run <- function(){
 
   raw.data <- ReadData()
-  png(filename = "./plot1.png", width=480, height=480, units='px')
-  hist(raw.data$Global_active_power, col = c('Red'), xlab = 'Global Active Power (kilowatts)', main='Global Active Power')
+
+  png(filename = "./plot2.png", width=480, height=480, units='px')
+  with(raw.data, plot(Time, Global_active_power,  ylab = 'Global Active Power (kilowatts)', xlab='', type='s'))
   dev.off()
 }
 
 
-Plot1.run()
+Plot2.run()

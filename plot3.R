@@ -4,7 +4,7 @@
 # Email: dafevara at gmail dot com
 
 # Course Project 1
-# Plot 1
+# Plot 3
 
 
 # Dependencies
@@ -26,16 +26,27 @@ ReadData <- function(){
   #data <- data[data$Date > '2007-01-31' & data$Date < '2007-02-02',]
 
   data <- readRDS("preset_data.rds")
+  data$tadTemp <- paste(data$Date, data$Time)
+
+  data$Time <- strptime(data$tadTemp, format = "%Y-%m-%d %H:%M:%S")
+
   return(data)
 }
 
-Plot1.run <- function(){
+Plot3.run <- function(){
 
-  raw.data <- ReadData()
-  png(filename = "./plot1.png", width=480, height=480, units='px')
-  hist(raw.data$Global_active_power, col = c('Red'), xlab = 'Global Active Power (kilowatts)', main='Global Active Power')
-  dev.off()
+  data <- ReadData()
+
+  #png(filename = "./plot3.png", width=480, height=480, units='px')
+
+  with(data, plot(Time, Sub_metering_1,  ylab = 'Energy sub metering', xlab='', type='s', col = 'black'))
+  with(data, lines(Time, Sub_metering_2,   type='s', col = 'red'))
+  with(data, lines(Time, Sub_metering_3,   type='s', col = 'blue'))
+  legend("topright", lty='solid', col = c('black', "blue", "red"), legend = c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'))
+
+
+  #dev.off()
 }
 
 
-Plot1.run()
+Plot3.run()
